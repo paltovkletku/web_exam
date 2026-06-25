@@ -15,11 +15,11 @@ app.post("/zipper", (req, res) => {
   const bb = busboy({ headers: req.headers });
   const chunks = [];
 
-  bb.on("file", (_, file) => {
+  bb.on("file", (name, file) => {
     file.on("data", chunk => chunks.push(chunk));
   });
 
-  bb.on("close", () => {
+  bb.on("finish", () => {
   const compressed = zlib.gzipSync(Buffer.concat(chunks));
 
   res.type("application/gzip");
